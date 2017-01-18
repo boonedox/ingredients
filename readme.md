@@ -1,40 +1,31 @@
-# Firebase & AngularJS TodoMVC Example
+# Tmpproj
 
-> Firebase is a scalable realtime backend that lets you build apps fast without managing servers.
+This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.25.5.
 
-> _[Firebase - firebase.com](https://www.firebase.com)_
+## Development server
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
+## Code scaffolding
 
-## Learning Firebase
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.
 
-The [Firebase website](https://www.firebase.com) is a great resource for getting started.
+## Build
 
-Here are some links you may find helpful:
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
-* [Tutorial](https://www.firebase.com/tutorial/)
-* [Documentation & Examples](https://www.firebase.com/docs/)
-* [API Reference](https://www.firebase.com/docs/web)
-* [Blog](https://www.firebase.com/blog/)
-* [Firebase on Github](http://firebase.github.io)
-* [AngularJS bindings for Firebase](https://www.firebase.com/docs/web/libraries/angular/)
+## Running unit tests
 
-Get help from other AngularJS users:
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-* [Firebase on StackOverflow](http://stackoverflow.com/questions/tagged/firebase)
-* [Google Groups mailing list](https://groups.google.com/forum/?fromgroups#!forum/firebase-talk)
-* [Firebase on Twitter](https://twitter.com/Firebase)
-* [Firebase on Facebook](https://facebook.com/Firebase)
-* [Firebase on Google +](https://plus.google.com/115330003035930967645/posts)
+## Running end-to-end tests
 
-_If you have other helpful links to share, or find any of the links above no longer work, please [let us know](https://github.com/tastejs/todomvc/issues)._
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Before running the tests make sure you are serving the app via `ng serve`.
 
-## Implementation
+## Deploying to GitHub Pages
 
-Firebase provides a realtime persistence layer for JSON data. In this example,
-we combine Firebase with AngularJS to create a collaborative TODO app where
-the TODO items are persisted and updated in realtime.
+Run `ng github-pages:deploy` to deploy to GitHub Pages.
 
-There is very little difference between this app and the vanilla AngularJS
-TODO app in how AngularJS is used. The only significant difference is the
-use of [AngularFire](http://github.com/firebase/angularFire), which provides
-an AngularJS service for persisting and updating TODO items in realtime.
+## Further help
+
+To get more help on the `angular-cli` use `ng help` or go check out the [Angular-CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
