@@ -1,9 +1,9 @@
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
-import { HeroDetailComponent } from './hero-detail.component';
-import { HeroesComponent }     from './heroes.component';
-import { HeroService } from './hero.service';
+import { RecipeDetailComponent } from './recipe-detail.component';
+import { RecipesComponent }     from './recipes.component';
+import { RecipeService } from './recipe.service';
 import { DashboardComponent } from './dashboard.component';
 import { AppRoutingModule }     from './app-routing.module';
 
@@ -26,11 +26,11 @@ export const firebaseConfig = {
         AngularFireModule.initializeApp(firebaseConfig),
         AppRoutingModule,
     ],
-    providers: [ HeroService ],
+    providers: [ RecipeService ],
     declarations: [ 
       AppComponent,
-      HeroDetailComponent,
-      HeroesComponent,
+      RecipeDetailComponent,
+      RecipesComponent,
       DashboardComponent,
     ],
     bootstrap:    [ AppComponent ]

@@ -1,0 +1,23 @@
+<h2>My Recipes</h2>
+    <div>
+      <table>
+        <tr>
+          <td> <input [(ngModel)]="newRecipe.name" placeholder="name"> </td>
+          <td> <button (click)="addRecipe()">add</button> </td>
+        </tr>
+      </table>
+    </div>
+<ul class="heroes">
+    <li
+        *ngFor="let recipe of recipes"
+        [class.selected]="recipe === selectedRecipe"
+        (click)="onSelect(recipe)">
+        <span class="badge">{{recipe.rank}}</span> {{recipe.name}}
+    </li>
+</ul>
+<div *ngIf="selectedRecipe">
+  <h2>
+    {{selectedRecipe.name | uppercase}} is my hero
+  </h2>
+  <button (click)="gotoDetail()">View Details</button>
+</div>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { HeroService } from './hero.service';
-import { Hero } from './hero';
+import { RecipeService } from './recipe.service';
+import { Recipe } from './recipe';
 import { OnInit } from '@angular/core';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
