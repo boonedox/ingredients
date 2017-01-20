@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Ingredient, IIngredient } from './ingredient';
+import { Ingredient } from './ingredient';
 
 import {AngularFire, FirebaseListObservable, AngularFireDatabase} from 'angularfire2';
 
@@ -10,19 +10,20 @@ export class IngredientService {
         private af: AngularFire
     ) {}
 
-    getIngredients(): FirebaseListObservable<IIngredient[]> {
+    getIngredients(): FirebaseListObservable<Ingredient[]> {
         return this.af.database.list('/ingredients');
     }
 
-    createIngredient(ingredient: IIngredient): firebase.Promise<any> {
+/*
+    createIngredient(ingredient: Ingredient): firebase.Promise<any> {
         return this.getIngredients().push(ingredient);
     }
 
-    removeIngredient(ingredient: IIngredient): firebase.Promise<any> {
+    removeIngredient(ingredient: Ingredient): firebase.Promise<any> {
         return this.getIngredients().remove(ingredient.$key);
     }
 
-    updateIngredient(ingredient: IIngredient, changes: any): firebase.Promise<any> {
+    updateIngredient(ingredient: Ingredient, changes: any): firebase.Promise<any> {
         return this.getIngredients().update(ingredient.$key, changes);
     }
     
@@ -32,4 +33,5 @@ export class IngredientService {
                 .subscribe(ingredients => resolve(ingredients.find(ingredients => ingredients.$key === $key)));
         });
     }
+    */
 }

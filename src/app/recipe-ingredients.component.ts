@@ -1,7 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ElementRef, ViewChild, Renderer } from '@angular/core';
 import { IngredientService } from './ingredient.service';
 import { RecipeService } from './recipe.service';
-import { IIngredient, Ingredient } from './ingredient';
+import { Ingredient } from './ingredient';
 import { Recipe } from './recipe';
 import { OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -14,9 +14,10 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 })
 
 export class RecipeIngredientsComponent implements OnInit {
+    @ViewChild('quantityInput') input: ElementRef;
     @Input()
     recipe: Recipe;
-    newIngredient: Ingredient = new Ingredient("");
+    newIngredient: Ingredient = new Ingredient('', null, '');
     ingredients: Ingredient[];
     recipeIngredients: Ingredient[];
     ngOnInit(): void {
@@ -27,31 +28,31 @@ export class RecipeIngredientsComponent implements OnInit {
         private af: AngularFire,
         private ingredientService: IngredientService,
         private recipeService: RecipeService,
-        private router: Router
+        private router: Router,
+        private renderer: Renderer
     ) {}
 
     addIngredient(): void {
-        this.ingredientService.createIngredient(this.newIngredient);
+        //this.ingredientService.createIngredient(this.newIngredient);
         if (!Array.isArray(this.recipe.ingredients)) {
             this.recipe.ingredients = [];
         }
-        this.recipe.ingredients.push(this.newIngredient.name);
+        this.recipe.ingredients.push(this.newIngredient);
         this.recipeService.updateRecipe(this.recipe, {ingredients: this.recipe.ingredients});
-        this.newIngredient = new Ingredient("");
+        this.newIngredient = new Ingredient('', null, '');
+        this.renderer.invokeElementMethod(this.input.nativeElement, 'focus');
     }
 
     //onSelect(recipe: Recipe): void {
         //this.selectedRecipe = recipe;
     //}
 
-/*
-    delete(recipe: Recipe): void {
-        this.selectedRecipe = null;
+    delete(ingredient: Ingredient): void {
         if (confirm("Are you sure?")) {
-            this.recipeService.removeRecipe(recipe);
+            this.recipe.ingredients = this.recipe.ingredients.filter(i => i.name !== ingredient.name);
+            this.recipeService.updateRecipe(this.recipe, {ingredients: this.recipe.ingredients});
         }
     }
-*/    
 
 /*
     gotoDetail(): void {
@@ -59,9 +60,7 @@ export class RecipeIngredientsComponent implements OnInit {
     }
 */
     getRecipeIngredients(recipe: Recipe): void {
-        this.ingredientService.getIngredients().subscribe(ingredients => {
-            this.recipeIngredients = ingredients;
-        });
+        this.recipeIngredients = recipe.ingredients;
     }
 
     getIngredients(): void {

@@ -12,5 +12,5 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 })
 
 export class AppComponent {
-  title = 'Tour of Heroes';
+  title = 'Recipes';
 }

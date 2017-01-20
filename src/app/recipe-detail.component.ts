@@ -20,10 +20,11 @@ export class RecipeDetailComponent implements OnInit {
       .switchMap((params: Params) => this.recipeService.getRecipe(params['id']))
       .subscribe(recipe => this.recipe = recipe);
   }
-  goBack(): void {
+  save(): void {
     this.recipeService.updateRecipe(this.recipe, {name: this.recipe.name});
-    console.log(this.recipe)
-    //this.location.back();
+  }
+  goBack(): void {
+    this.location.back();
   }
 
 

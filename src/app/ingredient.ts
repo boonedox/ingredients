@@ -1,12 +1,11 @@
-export interface IIngredient {
-  $key?: string;
+export class Ingredient {
   name: string;
-}
+  quantity: number;
+  unit: string;
 
-export class Ingredient implements IIngredient {
-  name: string;
-
-  constructor(name: string) {
+  constructor(name: string, quantity: number, unit: string) {
       this.name = name;
+      this.quantity = quantity;
+      this.unit = unit;
   }
 }

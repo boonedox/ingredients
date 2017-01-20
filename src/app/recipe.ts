@@ -1,16 +1,18 @@
+import { Ingredient } from './ingredient';
+
 export interface IRecipe {
   $key?: string;
   name: string;
   rank: number;
-  ingredients: string[];
+  ingredients: Ingredient[];
 }
 
 export class Recipe implements IRecipe {
   name: string;
   rank: number;
-  ingredients: string[];
+  ingredients: Ingredient[];
 
-  constructor(name: string, rank: number, ingredients: string[] = []) {
+  constructor(name: string, rank: number, ingredients: Ingredient[] = []) {
       this.name = name;
       this.rank = rank;
       if (!Array.isArray(ingredients)) {

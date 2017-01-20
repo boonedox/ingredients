@@ -3,6 +3,7 @@
     <div>
         <label>name: </label>
         <input [(ngModel)]="recipe.name" placeholder="name">
+        <button (click)="save()">save</button>
     </div>
     <recipe-ingredients [recipe]="recipe"></recipe-ingredients>
     <button (click)="goBack()">Back</button>
