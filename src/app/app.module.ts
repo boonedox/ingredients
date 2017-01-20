@@ -2,8 +2,10 @@ import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
 import { RecipeDetailComponent } from './recipe-detail.component';
+import { RecipeIngredientsComponent } from './recipe-ingredients.component';
 import { RecipesComponent }     from './recipes.component';
 import { RecipeService } from './recipe.service';
+import { IngredientService } from './ingredient.service';
 import { DashboardComponent } from './dashboard.component';
 import { AppRoutingModule }     from './app-routing.module';
 
@@ -26,10 +28,11 @@ export const firebaseConfig = {
         AngularFireModule.initializeApp(firebaseConfig),
         AppRoutingModule,
     ],
-    providers: [ RecipeService ],
+    providers: [ RecipeService, IngredientService ],
     declarations: [ 
       AppComponent,
       RecipeDetailComponent,
+      RecipeIngredientsComponent,
       RecipesComponent,
       DashboardComponent,
     ],

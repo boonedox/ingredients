@@ -34,6 +34,13 @@ export class RecipesComponent implements OnInit {
     onSelect(recipe: Recipe): void {
         this.selectedRecipe = recipe;
     }
+
+    delete(recipe: Recipe): void {
+        this.selectedRecipe = null;
+        if (confirm("Are you sure?")) {
+            this.recipeService.removeRecipe(recipe);
+        }
+    }
     
     gotoDetail(): void {
         this.router.navigate(['/detail', this.selectedRecipe.$key]);

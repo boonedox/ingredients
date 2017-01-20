@@ -1,0 +1,21 @@
+<h2>Ingredients</h2>
+    <div>
+      <table>
+        <tr>
+          <td> <input [(ngModel)]="newIngredient.name" placeholder="name"> </td>
+          <td> <button (click)="addIngredient()">add</button> </td>
+        </tr>
+      </table>
+    </div>
+<ul class="heroes">
+    <li
+        *ngFor="let ingredient of recipeIngredients"
+        >
+        <span class="clickable" (click)="onSelect(ingredient)">
+          {{ingredient.name}}
+        </span>
+        <span class="delete clickable" (click)="delete(ingredient)">
+          <i class="material-icons">delete</i>
+        </span>
+    </li>
+</ul>

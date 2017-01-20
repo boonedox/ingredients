@@ -11,8 +11,13 @@
     <li
         *ngFor="let recipe of recipes"
         [class.selected]="recipe === selectedRecipe"
-        (click)="onSelect(recipe)">
-        <span class="badge">{{recipe.rank}}</span> {{recipe.name}}
+        >
+        <span class="clickable" (click)="onSelect(recipe)">
+          <span class="badge">{{recipe.rank}}</span> {{recipe.name}}
+        </span>
+        <span class="delete clickable" (click)="delete(recipe)">
+          <i class="material-icons">delete</i>
+        </span>
     </li>
 </ul>
 <div *ngIf="selectedRecipe">

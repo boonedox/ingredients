@@ -12,19 +12,20 @@ export class RecipeService {
     ) {}
 
     getRecipes(): FirebaseListObservable<IRecipe[]> {
-        //this.af.database.list('recipes').push({
-            //name:"Nachos"
-        //});
         return this.af.database.list('/recipes');
     }
 
     createRecipe(recipe: IRecipe): firebase.Promise<any> {
-        //changes.id = recipe.$key;
+        console.log("adding");
+        console.log(recipe);
         return this.getRecipes().push(recipe);
     }
 
+    removeRecipe(recipe: IRecipe): firebase.Promise<any> {
+        return this.getRecipes().remove(recipe.$key);
+    }
+
     updateRecipe(recipe: IRecipe, changes: any): firebase.Promise<any> {
-        //changes.id = recipe.$key;
         return this.getRecipes().update(recipe.$key, changes);
     }
     
