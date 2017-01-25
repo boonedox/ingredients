@@ -6,13 +6,13 @@
             <td><input name="quantity" #quantityInput [(ngModel)]="newIngredient.quantity" placeholder="quantity"></td>
             <td><select name="unit" [(ngModel)]="newIngredient.unit">
               <option>count</option>
-              <option>grams</option>
-              <option>ounces</option>
-              <option>pounds</option>
-              <option>teaspoons</option>
-              <option>tablespoons</option>
-              <option>cups</option>
+              <option value="ounce">ounce(s)</option>
+              <option value="pound">pound(s)</option>
+              <option value="teaspoon">teaspoon(s)</option>
+              <option value="tablespoon">tablespoon(s)</option>
+              <option value="cup">cup(s)</option>
               <option>15 oz can</option>
+              <option>32 oz can</option>
               </select>
             </td>
             <td> <input name="ingredient" [(ngModel)]="newIngredient.name" placeholder="name"> </td>
@@ -25,8 +25,10 @@
     <li
         *ngFor="let ingredient of recipe.ingredients"
         >
-        <span>&nbsp;&nbsp;
-          {{ingredient.quantity}}&nbsp;{{ingredient.unit}}&nbsp;{{ingredient.name}}
+        <span class="ingredient">&nbsp;&nbsp;
+          {{ingredient.quantity}}&nbsp;
+          <span *ngIf="ingredient.unit !== 'count'">{{ingredient.unit}}(s)&nbsp;</span>
+          {{ingredient.name}}
         </span>
         <span class="delete clickable" (click)="delete(ingredient)">
           <i class="material-icons">delete</i>

@@ -16,8 +16,6 @@ export class RecipeService {
     }
 
     createRecipe(recipe: IRecipe): firebase.Promise<any> {
-        console.log("adding");
-        console.log(recipe);
         return this.getRecipes().push(recipe);
     }
 

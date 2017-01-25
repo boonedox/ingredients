@@ -1,28 +1,91 @@
-<h2>My Recipes</h2>
-    <div>
-      <table>
-        <tr>
-          <td> <input [(ngModel)]="newRecipe.name" placeholder="name"> </td>
-          <td> <button (click)="addRecipe()">add</button> </td>
-        </tr>
-      </table>
-    </div>
+<div>
+  <form name="newRecipeForm">
+    <table>
+      <tr>
+        <td> <input name="newRecipeName" [(ngModel)]="newRecipe.name" placeholder="name"> </td>
+        <td> <button (click)="addRecipe()">add</button> </td>
+      </tr>
+    </table>
+  </form>
+</div>
+<table><tr><td style="width: 500px; vertical-align: top">
 <ul class="heroes">
     <li
+    style="width: 400px"
         *ngFor="let recipe of recipes"
-        [class.selected]="recipe === selectedRecipe"
+        [class.selected]="recipe.selected"
         >
-        <span class="clickable" (click)="onSelect(recipe)">
-          <span class="badge">{{recipe.rank}}</span> {{recipe.name}}
-        </span>
-        <span class="delete clickable" (click)="delete(recipe)">
-          <i class="material-icons">delete</i>
-        </span>
+        <div style="float: left; width: 150px" class="clickable" (click)="onSelect(recipe)">
+          <span class="badge">{{recipe.uses || 0}}</span> {{recipe.name}}
+        </div>
+        <div class="editIcons">
+            <span class="clickable" (click)="delete(recipe)">
+              <i class="material-icons">delete</i>
+            </span>
+            <span class="clickable" (click)="edit(recipe)">
+              <i class="material-icons">mode_edit</i>
+            </span>
+            <span *ngIf="!!recipe.selected === false" class="clickable" (click)="select(recipe)">
+              <i class="material-icons">add</i>
+            </span>
+            <span *ngIf="recipe.selected" class="clickable" (click)="select(recipe)">
+              <i class="material-icons">remove</i>
+            </span>
+        </div>
     </li>
 </ul>
-<div *ngIf="selectedRecipe">
-  <h2>
-    {{selectedRecipe.name}}
-  </h2>
-  <button (click)="gotoDetail()">View Details</button>
+</td>
+<td style="vertical-align: top">
+  <div *ngIf="selectedIngredients" style="float: right">
+  <table>
+    <tr>
+      <td> <button (click)="sendList()">Send List</button></td>
+      <td> <button (click)="printIngredients()">Print List</button></td>
+    </tr>
+  </table>
+  <div *ngIf="sendMessage">
+  <br>
+    {{sendMessage}}
+    (<a href="http://xop.herokuapp.com/" target="_blank">todo</a>)
+  </div>
+
+  <div *ngFor="let category of categories">
+    <ul class="heroes">
+      <div class='container' [dragula]='"another-bag"' [dragulaModel]='category.selectedIngredients'>
+      {{category.name}}
+        <li
+            *ngFor="let ingredient of category.selectedIngredients"
+            >
+            <span class="ingredient">&nbsp;&nbsp;
+              {{ingredient.quantity}}&nbsp;
+              <span *ngIf="ingredient.unit !== 'count'">{{ingredient.unit}}&nbsp;</span>
+              {{ingredient.name}}
+            </span>
+            <span class="delete clickable" (click)="removeSelectedIngredient(ingredient)">
+              <i class="material-icons">delete</i>
+            </span>
+        </li>
+        </div>
+    </ul>
+  </div>
+  <span id="ingredientSpan" style="display:none">
+    <div *ngFor="let category of categories">
+      <ul class="heroes">
+        <div class='container' [dragula]='"another-bag"' [dragulaModel]='category.selectedIngredients'>
+        {{category.name}}
+          <li
+              *ngFor="let ingredient of category.selectedIngredients"
+              >
+              <span class="ingredient">&nbsp;&nbsp;
+                {{ingredient.quantity}}&nbsp;
+                <span *ngIf="ingredient.unit !== 'count'">{{ingredient.unit}}&nbsp;</span>
+                {{ingredient.name}}
+              </span>
+          </li>
+          </div>
+      </ul>
+    </div>
+  </span>
 </div>
+</td>
+</tr></table>

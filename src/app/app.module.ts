@@ -5,12 +5,14 @@ import { RecipeDetailComponent } from './recipe-detail.component';
 import { RecipeIngredientsComponent } from './recipe-ingredients.component';
 import { RecipesComponent }     from './recipes.component';
 import { RecipeService } from './recipe.service';
+import { TodoService } from './todo.service';
 import { IngredientService } from './ingredient.service';
 import { DashboardComponent } from './dashboard.component';
 import { AppRoutingModule }     from './app-routing.module';
 
 import { AppComponent }  from './app.component';
 import { AngularFireModule } from 'angularfire2';
+import { DragulaModule } from 'ng2-dragula/ng2-dragula';
 
 // Must export the config
 export const firebaseConfig = {
@@ -27,8 +29,9 @@ export const firebaseConfig = {
         FormsModule,
         AngularFireModule.initializeApp(firebaseConfig),
         AppRoutingModule,
+        DragulaModule
     ],
-    providers: [ RecipeService, IngredientService ],
+    providers: [ RecipeService, IngredientService, TodoService ],
     declarations: [ 
       AppComponent,
       RecipeDetailComponent,
