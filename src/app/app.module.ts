@@ -5,6 +5,7 @@ import { RecipeDetailComponent } from './recipe-detail.component';
 import { RecipeIngredientsComponent } from './recipe-ingredients.component';
 import { RecipesComponent }     from './recipes.component';
 import { RecipeService } from './recipe.service';
+import { CategoryService } from './category.service';
 import { TodoService } from './todo.service';
 import { IngredientService } from './ingredient.service';
 import { DashboardComponent } from './dashboard.component';
@@ -31,7 +32,7 @@ export const firebaseConfig = {
         AppRoutingModule,
         DragulaModule
     ],
-    providers: [ RecipeService, IngredientService, TodoService ],
+    providers: [ RecipeService, IngredientService, TodoService, CategoryService ],
     declarations: [ 
       AppComponent,
       RecipeDetailComponent,

@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { RecipeService } from './recipe.service';
+import { CategoryService } from './category.service';
 import { TodoService } from './todo.service';
 import { Ingredient } from './ingredient';
+import { Category, ICategory } from './category';
 import { IRecipe, Recipe } from './recipe';
 import { ITodo, Todo } from './todo';
 import { OnInit } from '@angular/core';
@@ -9,7 +11,6 @@ import { Router } from '@angular/router';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 import 'dragula/dist/dragula.css';
 import { DragulaService, dragula } from 'ng2-dragula/ng2-dragula';
-import { Category } from './category';
 
 @Component({
   selector: 'my-recipes',
@@ -19,23 +20,17 @@ import { Category } from './category';
 
 
 export class RecipesComponent implements OnInit {
+    filters = {
+        selected: false
+    }
+    sort = 'alpha'
     selectedRecipe: IRecipe;
     newRecipe: Recipe = new Recipe("", 0);
+    newCategory: Category = new Category("", [], []);
     recipes: Recipe[];
+    selectedRecipes: Recipe[] = [];
     sendMessage: string;
-    categories: Category[] = [
-        new Category("Produce", ["potato", "onion", "green pepper", "red pepper"], []),
-        new Category("Meat & Cheese", ["ham", "ground beef", "sausage", "chicken", "hot dogs"], []),
-        new Category("Boxed/Canned", ["cereal"], []),
-        new Category("Italian/Asian", ["udon noodles", "spaghetti sauce"], []),
-        new Category("Mexican", ["salsa", "refried beans", "black beans"], []),
-        new Category("Condiments", ["ketchup", "mustard", "pickles"], []),
-        new Category("Baking/Spices", ["cumin", "powdered sugar"], []),
-        new Category("Dairy", ["eggs", "milk", "cottage cheese"], []),
-        new Category("Frozen", ["peas", "corn", "hashbrowns"], []),
-        new Category("Chips/Crackers", ["potato chips", "taco chips", "ritz"], []),
-        new Category("Unknown", [], []),
-    ]
+    categories: Category[] = [];
     selectedIngredients: Ingredient[] = [];
     selectedIngredients2: Ingredient[] = [];
     ngOnInit(): void {
@@ -43,27 +38,55 @@ export class RecipesComponent implements OnInit {
     constructor(
         private af: AngularFire,
         private recipeService: RecipeService,
+        private categoryService: CategoryService,
         private todoService: TodoService,
         private router: Router,
         private dragulaService: DragulaService
     ) {
-        this.getRecipes();
-        dragulaService.dropModel.subscribe((value) => {
-          this.onDropModel(value.slice(1));
+        this.dragulaService.drop.subscribe((value) => {
+          this.onDrop(value.slice(1));
         });
-        dragulaService.removeModel.subscribe((value) => {
-          this.onRemoveModel(value.slice(1));
+        this.dragulaService.removeModel.subscribe((value) => {
+          this.onRemove(value.slice(1));
         });
+        this.getCategories();
   }
-
-    private onDropModel(args) {
+    toggleSelected() {
+        this.filters.selected = !this.filters.selected;
+        this.getRecipes();
+    }
+    alphaSort(): void {
+        this.sort = 'alpha';
+        this.getRecipes();
+    }
+    usesSort(): void {
+        this.sort = 'uses';
+        this.getRecipes();
+    }
+    useDateSort(): void {
+        this.sort = 'dateLastUsed';
+        this.getRecipes();
+    }
+    private onDrop(args) {
         let [el, target, source] = args;
-        // do something else
+        let ingredientName = el.id.split('ingredient.')[1];
+        let oldCategoryName = source.id.split('category.')[1];
+        let newCategoryName = target.id.split('category.')[1];
+        this.categories.forEach((c) => {
+            if (c.name === oldCategoryName) {
+                c.ingredients = c.ingredients || [];
+                c.ingredients = c.ingredients.filter((i) => i !== ingredientName);
+                this.categoryService.updateCategory(c, {ingredients: c.ingredients});
+            } else if (c.name === newCategoryName) {
+                c.ingredients = c.ingredients || [];
+                c.ingredients.push(ingredientName);
+                this.categoryService.updateCategory(c, {ingredients: c.ingredients});
+            }
+        });
       }
 
-    private onRemoveModel(args) {
+    private onRemove(args) {
       let [el, source] = args;
-      // do something else
     }
 
     addRecipe(): void {
@@ -71,7 +94,13 @@ export class RecipesComponent implements OnInit {
         this.newRecipe = new Recipe("", 0);
     }
 
+    addCategory(): void{
+        this.categoryService.createCategory(this.newCategory);
+        this.newCategory = new Category("", [], []);
+    }
+
     addRemoveSelectedIngredients(recipe: Recipe): void {
+        recipe.ingredients = recipe.ingredients || [];
         recipe.ingredients.forEach((ing) => {
             let found = this.selectedIngredients.find((i) => i.name === ing.name && i.unit === ing.unit);
             if (found) {
@@ -97,10 +126,15 @@ export class RecipesComponent implements OnInit {
         });
     }
 
+    setSelectedRecipes(): void {
+        this.selectedRecipes = this.recipes.filter((r) => r.selected);
+    }
+
     select(recipe: IRecipe): void {
         recipe.selected = !recipe.selected;
         this.addRemoveSelectedIngredients(recipe);
         this.recipeService.updateRecipe(recipe, {selected: recipe.selected});
+        this.setSelectedRecipes();
     }
     removeSelectedIngredient(ingredient: Ingredient): void {
         this.selectedIngredients = this.selectedIngredients.filter((i) => i.name !== ingredient.name);
@@ -147,32 +181,69 @@ export class RecipesComponent implements OnInit {
         2000);
     }
 
+
     getRecipes(): void {
         this.recipeService.getRecipes().subscribe(recipes => {
             this.recipes = recipes.sort((n1, n2) => {
-                if (n1.name.toLowerCase() > n2.name.toLowerCase()) {
-                    return 1;
+                switch (this.sort) {
+                    case 'uses':
+                        n1.dateLastUsed = n1.dateLastUsed || 0;
+                        n2.dateLastUsed = n2.dateLastUsed || 0;
+                        if (n1.dateLastUsed > n2.dateLastUsed) {
+                            return 1;
+                        }
+                        if (n1.dateLastUsed < n2.dateLastUsed) {
+                            return -1;
+                        }
+                        return 0;
+                    case 'uses':
+                        n1.uses = n1.uses || 0;
+                        n2.uses = n2.uses || 0;
+                        if (parseInt(n1.uses.toString()) > parseInt(n2.uses.toString())) {
+                            return 1;
+                        }
+                        if (parseInt(n1.uses.toString()) < parseInt(n2.uses.toString())) {
+                            return -1;
+                        }
+                        return 0;
+                    case 'alpha':
+                    default:
+                        if (n1.name.toLowerCase() > n2.name.toLowerCase()) {
+                            return 1;
+                        }
+                        if (n1.name.toLowerCase() < n2.name.toLowerCase()) {
+                            return -1;
+                        }
+                        return 0;
                 }
-                if (n1.name.toLowerCase() < n2.name.toLowerCase()) {
-                    return -1;
-                }
-                return 0;
             });
-            this.selectedIngredients = [];
+            if (this.sort === 'uses') {
+                this.recipes = this.recipes.reverse();
+            }
+            if (this.filters.selected) {
+                this.recipes = this.recipes.filter((r) => r.selected);
+            }
+            this.selectedIngredients.length = 0;
             this.recipes.forEach((r) => {
                 if (r.selected) {
                     this.addRemoveSelectedIngredients(r);
                 }
-            })
+            });
+            this.setSelectedRecipes();
+        });
+    }
+
+    getCategories(): void {
+        this.categoryService.getCategories().subscribe(categories => {
+            this.categories = categories.map((c) => <Category> c);
+            this.getRecipes();
         });
     }
     printIngredients(): void {
-        var elem = document.getElementById('ingredientSpan');
+        var elem = document.getElementById('printIngredientSpan');
         var mywindow = window.open('', 'PRINT', 'height=600,width=800');
         mywindow.document.write('<html><head><title>' + document.title  + '</title>');
-
         mywindow.document.write('</head><body >');
-        mywindow.document.write('<h1>' + document.title  + '</h1>');
         mywindow.document.write(elem.innerHTML);
         mywindow.document.write('</body></html>');
 

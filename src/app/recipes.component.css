@@ -1,3 +1,28 @@
+.gu-mirror {
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 9999 !important;
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80);
+}
+.gu-hide {
+  display: none !important;
+}
+.gu-unselectable {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+.gu-transit {
+  opacity: 0.2;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20);
+}
+
+
+
 .selected {
   background-color: #CFD8DC !important;
   color: white;
@@ -69,4 +94,49 @@ span.delete {
 span.ingredient {
   position: relative;
   top: 2px;
+}
+.ingredientList {
+  margin: 0 0 2em 0;
+  list-style-type: none;
+  padding: 0;
+  width: 15em;
+}
+.ingredientListItem {
+  position: relative;
+  white-space: nowrap;
+  left: 0;
+  background-color: #EEE;
+  margin: .5em;
+  padding: .3em 0;
+  height: 1.6em;
+  border-radius: 4px;
+  width: 350px;
+  cursor: -webkit-grab;
+}
+.ingredientListItem.selected:hover {
+  background-color: #BBD8DC !important;
+  color: white;
+}
+.ingredientListItem:hover {
+  color: #607D8B;
+  background-color: #DDD;
+  left: .1em;
+}
+.ingredientList .text {
+  position: relative;
+  top: -3px;
+}
+.ingredientList .badge {
+  display: inline-block;
+  font-size: small;
+  color: white;
+  padding: 0.8em 0.7em 0 0.7em;
+  background-color: #607D8B;
+  line-height: 1em;
+  position: relative;
+  left: -1px;
+  top: -4px;
+  height: 1.8em;
+  margin-right: .8em;
+  border-radius: 4px 0 0 4px;
 }
