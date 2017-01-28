@@ -75,7 +75,7 @@
         (<a href="http://xop.herokuapp.com/" target="_blank">todo</a>)
       </div>
 
-      <div *ngFor="let category of categories">
+      <div *ngFor="let category of categories" class="categoryDiv">
           <div 
             id='category.{{category.name}}'
             class='ingredientList container' [dragula]='"another-bag"'>
@@ -96,12 +96,14 @@
           </div>
       </div>
       <div id="printIngredientSpan" style="border: 1px dashed blue; display: none">
+        <div style="float: left; margin-right: 20px">
       <h3>Meals</h3>
         <ul class="heroes">
             <li *ngFor="let recipe of selectedRecipes"> {{recipe.name}} </li>
         </ul>
+        </div>
         <h3>Ingredients</h3>
-        <div *ngFor="let category of categories">
+        <div *ngFor="let category of categories" style="float: left; margin-right: 20px">
         <span *ngIf="category.selectedIngredients && category.selectedIngredients.length > 0">
             {{category.name}}
           <ul class="heroes">

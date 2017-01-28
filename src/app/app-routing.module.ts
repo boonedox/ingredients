@@ -4,7 +4,7 @@ import { DashboardComponent }   from './dashboard.component';
 import { RecipesComponent }      from './recipes.component';
 import { RecipeDetailComponent }  from './recipe-detail.component';
 const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: '/recipes', pathMatch: 'full' },
   { path: 'dashboard',  component: DashboardComponent },
   { path: 'detail/:id', component: RecipeDetailComponent },
   { path: 'recipes',     component: RecipesComponent }
