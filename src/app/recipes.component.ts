@@ -121,6 +121,15 @@ export class RecipesComponent implements OnInit {
                 if (!added && (c.name === 'Unknown' || c.ingredients.some((s) => s === ing.name))) {
                     added = true;
                     c.selectedIngredients.push(ing);
+                    c.selectedIngredients = c.selectedIngredients.sort((a, b) => {
+                        if (a.name > b.name) {
+                            return 1;
+                        } else if (b.name > a.name) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                    });
                 }
             });
         });
